@@ -1,0 +1,27 @@
+FROM alpine:latest
+
+# Set working directory
+WORKDIR /app
+
+# Install some packages (mock)
+RUN echo "Installing packages..." && \
+    mkdir -p /app/bin && \
+    echo '#!/bin/sh' > /app/bin/hello && \
+    echo 'echo "Hello from MyDocker container!"' >> /app/bin/hello && \
+    chmod +x /app/bin/hello
+
+# Set environment variable
+ENV APP_NAME=mydocker-app
+ENV VERSION=1.0
+
+# Copy application files
+COPY . /app/
+
+# Expose port
+EXPOSE 8080
+
+# Create volume
+VOLUME ["/app/data"]
+
+# Set default command
+CMD ["/app/bin/hello"]
